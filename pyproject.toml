@@ -1,0 +1,26 @@
+[project]
+name = "dllm-gpt2"
+version = "0.1.0"
+description = "dLLM-style GPT-2 training with Hugging Face Transformers"
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    "torch",
+    "transformers",
+    "datasets",
+    "accelerate",
+    "wandb>=0.23.0",
+    "nvitop>=1.6.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+# 이 프로젝트는 패키지 디렉터리가 아니라 단일/소수의 스크립트(.py 파일)로만 구성되어 있으므로
+# wheel 안에 포함할 파일을 명시적으로 지정해 줍니다.
+include = ["*.py"]
+
+

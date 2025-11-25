@@ -304,9 +304,19 @@ class GPT2dLLMLMHeadModel(GPT2LMHeadModel):
             labels_complementary = torch.cat([complementary_labels, labels_context], dim=1)
             
             labels = torch.cat([labels_primary, labels_complementary], dim=0)
+
+            # Construct Position IDs to align Noisy and Clean parts
+            # The Noisy segment (first half) and Clean segment (second half) must share the same position IDs
+            # so the model understands they correspond to the same tokens.
+            if position_ids is None:
+                seq_len = input_ids.shape[1] // 2
+                pos = torch.arange(seq_len, dtype=torch.long, device=input_ids.device)
+                # [0, 1, ... L-1, 0, 1, ... L-1]
+                position_ids = torch.cat([pos, pos], dim=0).unsqueeze(0).repeat(input_ids.shape[0], 1)
             
         outputs = self.transformer(
             input_ids,
+            position_ids=position_ids,
             past_key_values=past_key_values,
             attention_mask=attention_mask,
             token_type_ids=token_type_ids,

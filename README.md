@@ -2,6 +2,10 @@
 
 간단한 dLLM-style GPT-2 실험용 프로젝트입니다.
 
+# 관련 paper
+
+https://arxiv.org/pdf/2505.22618
+
 ## 실행 방법
 
 ```bash
